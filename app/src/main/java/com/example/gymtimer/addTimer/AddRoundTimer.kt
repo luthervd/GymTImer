@@ -17,6 +17,7 @@ import com.example.gymtimer.addTimer.SetNumberAction.*
 
 @Composable
 fun AddRoundTimer(navController: NavController, viewModel: TimerViewModel = viewModel()) {
+
     val (workTime, setWorkTime) = rememberSaveable {mutableStateOf(10000L)}
     val (restTime, setRestTime) = rememberSaveable {mutableStateOf(10000L)}
     val (rounds, setRounds) = rememberSaveable {mutableStateOf(10L)}
@@ -44,7 +45,6 @@ fun AddRoundTimer(navController: NavController, viewModel: TimerViewModel = view
               setNumberAction = DECREMENT,
               incrementAmount = 5000,
               onValueChanged = { setWorkTime(it as Long) })
-
         }
         Row(Modifier.fillMaxWidth(), Arrangement.SpaceEvenly) {
           Text(text = "Rest")
@@ -59,7 +59,6 @@ fun AddRoundTimer(navController: NavController, viewModel: TimerViewModel = view
               setNumberAction = DECREMENT,
               incrementAmount = 5000,
               onValueChanged = { setRestTime(it as Long) })
-
         }
         Row(Modifier.fillMaxWidth(), Arrangement.SpaceEvenly) {
           Text(text = "Rounds")
@@ -74,7 +73,6 @@ fun AddRoundTimer(navController: NavController, viewModel: TimerViewModel = view
               setNumberAction = DECREMENT,
               incrementAmount = 1,
               onValueChanged = { setRounds(it as Long) })
-
         }
         Row(Modifier.fillMaxWidth(), Arrangement.SpaceEvenly) {
           Button(onClick = { save()}){
@@ -87,5 +85,7 @@ fun AddRoundTimer(navController: NavController, viewModel: TimerViewModel = view
 fun formatTime(time: Long): String{
     val minutes = time / 1000 / 60
     val seconds = time / 1000 % 60
-    return "$minutes:$seconds"
+    val minuteView = if(minutes < 10) "0$minutes" else "$minutes"
+    val secondsView = if(seconds < 10) "0$seconds" else "$seconds"
+    return "$minuteView:$secondsView"
 }
