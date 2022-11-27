@@ -2,7 +2,6 @@ package com.example.gymtimer.addTimer
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
@@ -22,7 +21,6 @@ import com.example.gymtimer.model.TimerViewModel
 import com.example.gymtimer.model.RoundTimer
 import com.example.gymtimer.model.Timer
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.gymtimer.addTimer.SetNumberAction.*
 
 @Composable
 fun AddRoundTimer(navController: NavController, viewModel: TimerViewModel = viewModel()) {
