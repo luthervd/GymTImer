@@ -1,16 +1,13 @@
 package com.example.gymtimer.timer
 
-import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.RestartAlt
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,13 +15,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.gymtimer.model.TimerViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.gymtimer.model.PlayState
-import java.security.AllPermission
 
 @Composable
 fun TimerScreen(viewModel: TimerViewModel = viewModel() ){
@@ -38,18 +34,26 @@ fun TimerScreen(viewModel: TimerViewModel = viewModel() ){
 
         Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
-                modifier = Modifier.padding(10.dp),
+                modifier = Modifier.fillMaxWidth()
+                    .height(60.dp)
+                    .background(MaterialTheme.colorScheme.primary),
+
+                color = MaterialTheme.colorScheme.onPrimary,
+                textAlign = TextAlign.Center,
+                lineHeight = 60.sp,
                 text = "Round number ${viewState?.value?.roundNumber ?: 1} of ${viewState?.value?.numberOfRounds ?: 1}",
-                color = Color.Black,
-                style = MaterialTheme.typography.h2,
+                style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Normal,
                 fontSize = 30.sp
             )
-            Spacer(modifier=Modifier.weight(1f))
-            Text(
-                text = "${viewState.value?.current?.name ?: ""}",
-                color = Color.Black,
-                style = MaterialTheme.typography.h2,
+            Text(modifier = Modifier.fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.primary)
+                    .height(40.dp),
+                text = viewState.value?.current?.name ?: "",
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onPrimary,
+                lineHeight = 40.sp,
+                style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold
             )
             Spacer(modifier=Modifier.weight(1f))
@@ -59,12 +63,12 @@ fun TimerScreen(viewModel: TimerViewModel = viewModel() ){
                     .wrapContentHeight(),
                 horizontalArrangement = Arrangement.Center
             ) {
-                Box(Modifier.padding(40.dp), contentAlignment = Alignment.Center) {
+                Box(Modifier.padding(50.dp), contentAlignment = Alignment.Center) {
                     CircularProgressIndicator(
-                        color = Color.Red,
-                        modifier = Modifier.size(250.dp),
+                        color = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(300.dp),
                         progress = progress?.value ?: 10f,
-                        strokeWidth = 12.dp
+                        strokeWidth = 20.dp
                     )
                     Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                         Text(
@@ -82,16 +86,15 @@ fun TimerScreen(viewModel: TimerViewModel = viewModel() ){
                         Text(
                             text = "Next : ",
                             color = Color.Black,
-                            style = MaterialTheme.typography.h2,
+                            style = MaterialTheme.typography.headlineMedium,
                             fontWeight = FontWeight.Bold,
-                            fontSize = 15.sp
+                            fontSize = 20.sp
                         )
                         Text(
                             text = "${viewState.value?.next?.name ?: ""} ${viewState.value?.next?.startingTime ?: "No time set"}",
-                            color = Color.Black,
-                            style = MaterialTheme.typography.h2,
+                            style = MaterialTheme.typography.headlineMedium,
                             fontWeight = FontWeight.Bold,
-                            fontSize = 15.sp
+                            fontSize = 20.sp
 
                         )
                     }
@@ -107,26 +110,17 @@ fun TimerScreen(viewModel: TimerViewModel = viewModel() ){
             Spacer(modifier=Modifier.weight(1f))
             Row(modifier = Modifier.fillMaxWidth().padding(10.dp), horizontalArrangement = Arrangement.SpaceAround) {
 
-                OutlinedButton(
+                FilledIconButton(
                     onClick = { viewModel.requeue(context) },
-                    modifier = Modifier.size(100.dp),  //avoid the oval shape
-                    shape = CircleShape,
-                    border = BorderStroke(3.dp, Color.Blue),
-                    contentPadding = PaddingValues(0.dp),  //avoid the little icon
-                    colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.Blue)
+                    modifier = Modifier.size(100.dp)
 
                 ) {
                     Icon(Icons.Default.RestartAlt, contentDescription = "content description",modifier=Modifier.size(50.dp))
                 }
 
-                OutlinedButton(
+                FilledIconButton(
                     onClick =  clickAction,
-                    modifier = Modifier.size(100.dp),  //avoid the oval shape
-                    shape = CircleShape,
-                    border = BorderStroke(3.dp, Color.Blue),
-                    contentPadding = PaddingValues(10.dp),  //avoid the little icon
-                    colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.Blue)
-
+                    modifier = Modifier.size(100.dp)
                 ) {
                     Icon(img, contentDescription = "content description",modifier=Modifier.size(50.dp))
                 }
@@ -138,20 +132,16 @@ fun TimerScreen(viewModel: TimerViewModel = viewModel() ){
             Text(
                 text = "Finished",
                 color = Color.Black,
-                style = MaterialTheme.typography.h2,
+                style = MaterialTheme.typography.headlineMedium,
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 fontWeight = FontWeight.Bold
             )
-            OutlinedButton(
+            FilledIconButton(
                 onClick = { viewModel.requeue(context) },
-                modifier = Modifier.size(50.dp),  //avoid the oval shape
-                shape = CircleShape,
-                border = BorderStroke(1.dp, Color.Blue),
-                contentPadding = PaddingValues(0.dp),  //avoid the little icon
-                colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.Blue)
-
+                modifier = Modifier.size(100.dp),
+                colors = IconButtonDefaults.iconButtonColors(contentColor = Color.Blue)
             ) {
-                Icon(Icons.Default.RestartAlt, contentDescription = "content description")
+                Icon(Icons.Default.RestartAlt, contentDescription = "content description",modifier=Modifier.size(50.dp))
             }
         }
     }

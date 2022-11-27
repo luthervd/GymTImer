@@ -3,6 +3,10 @@ package com.example.gymtimer.addTimer
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material3.FilledIconButton
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -21,7 +25,7 @@ fun AddRoundTimer(navController: NavController, viewModel: TimerViewModel = view
     val (workTime, setWorkTime) = rememberSaveable {mutableStateOf(10000L)}
     val (restTime, setRestTime) = rememberSaveable {mutableStateOf(10000L)}
     val (rounds, setRounds) = rememberSaveable {mutableStateOf(10L)}
-
+    val spaceHeight = 50.dp;
     fun save(){
         val roundTimer = RoundTimer("My Round Timer")
         roundTimer.addWork(Timer(workTime, "Work"))
@@ -31,53 +35,22 @@ fun AddRoundTimer(navController: NavController, viewModel: TimerViewModel = view
         navController.navigate("timer")
     }
     Column(Modifier.fillMaxSize().padding(10.dp),
-           verticalArrangement = Arrangement.SpaceBetween) {
+           verticalArrangement = Arrangement.SpaceEvenly
+    ) {
+        Spacer(modifier = Modifier.height(spaceHeight))
+        SetTimerAction("Work",formatTime(workTime),workTime) { setWorkTime(it as Long) }
+        Spacer(modifier = Modifier.height(spaceHeight))
+        SetTimerAction("Rest",formatTime(restTime),restTime) { setRestTime(it as Long) }
+        Spacer(modifier = Modifier.height(spaceHeight))
+        SetTimerAction("Rounds",rounds.toString(),rounds) { setRounds(it as Long) }
+        Spacer(modifier = Modifier.weight(1f))
         Row(Modifier.fillMaxWidth(), Arrangement.SpaceEvenly) {
-          Text(text = "Work")
-          Text(text = formatTime(workTime))
-          SetNumberButton(
-              number = workTime,
-              setNumberAction = INCREMENT,
-              incrementAmount = 5000,
-              onValueChanged = { setWorkTime(it as Long) })
-          SetNumberButton(
-              number = workTime,
-              setNumberAction = DECREMENT,
-              incrementAmount = 5000,
-              onValueChanged = { setWorkTime(it as Long) })
-        }
-        Row(Modifier.fillMaxWidth(), Arrangement.SpaceEvenly) {
-          Text(text = "Rest")
-          Text(text = formatTime(restTime))
-          SetNumberButton(
-              number = restTime,
-              setNumberAction = INCREMENT,
-              incrementAmount = 5000,
-              onValueChanged = { setRestTime(it as Long) })
-          SetNumberButton(
-              number = restTime,
-              setNumberAction = DECREMENT,
-              incrementAmount = 5000,
-              onValueChanged = { setRestTime(it as Long) })
-        }
-        Row(Modifier.fillMaxWidth(), Arrangement.SpaceEvenly) {
-          Text(text = "Rounds")
-          Text(text = rounds.toString())
-          SetNumberButton(
-              number = rounds,
-              setNumberAction = INCREMENT,
-              incrementAmount = 1,
-              onValueChanged = { setRounds(it as Long) })
-          SetNumberButton(
-              number = rounds,
-              setNumberAction = DECREMENT,
-              incrementAmount = 1,
-              onValueChanged = { setRounds(it as Long) })
-        }
-        Row(Modifier.fillMaxWidth(), Arrangement.SpaceEvenly) {
-          Button(onClick = { save()}){
-              Text(text = "Run Timer")
-          }
+            FilledIconButton(
+                onClick =  { save()},
+                modifier = Modifier.size(100.dp)
+            ) {
+                Icon(Icons.Default.PlayArrow, contentDescription = "content description",modifier=Modifier.size(50.dp))
+            }
         }
     }
 }
