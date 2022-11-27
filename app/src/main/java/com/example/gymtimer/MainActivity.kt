@@ -24,7 +24,6 @@ class MainActivity : ComponentActivity() {
         val viewModel: TimerViewModel by viewModels()
         setContent {
             GymTimerTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
                     val navController = rememberNavController()
                     NavHost(
@@ -35,7 +34,6 @@ class MainActivity : ComponentActivity() {
                         composable(route = "addRound"){
                             AddRoundTimer(navController,viewModel)
                         }
-
                         composable(route = "timer"){
                             TimerScreen(viewModel)
                         }
@@ -45,14 +43,3 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    GymTimerTheme {
-        Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
-            TimerScreen()
-        }
-    }
-}
-

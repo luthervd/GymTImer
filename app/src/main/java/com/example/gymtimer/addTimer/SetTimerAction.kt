@@ -9,7 +9,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun SetTimerAction(description: String, formattedTime: String,value: Number, onTimeChanged: (time : Number) -> Unit){
+fun SetTimerAction(description: String, formattedTime: String,value: Number,incrementAmount: Int, onTimeChanged: (time : Number) -> Unit){
     val height = 70.dp
     val lineHeight = 50.sp;
     val fontSize = 30.sp;
@@ -26,13 +26,13 @@ fun SetTimerAction(description: String, formattedTime: String,value: Number, onT
         SetNumberButton(
             number = value,
             setNumberAction = SetNumberAction.INCREMENT,
-            incrementAmount = 5000,
+            incrementAmount = incrementAmount,
             onValueChanged = onTimeChanged
         )
         SetNumberButton(
             number = value,
             setNumberAction = SetNumberAction.DECREMENT,
-            incrementAmount = 5000,
+            incrementAmount = incrementAmount,
             onValueChanged = onTimeChanged
         )
     }

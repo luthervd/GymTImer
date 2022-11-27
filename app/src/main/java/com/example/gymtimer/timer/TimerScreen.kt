@@ -10,9 +10,13 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -22,8 +26,14 @@ import com.example.gymtimer.model.TimerViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.gymtimer.model.PlayState
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun TimerScreen(viewModel: TimerViewModel = viewModel() ){
+fun TimerScreen( viewModel: TimerViewModel = viewModel() , modifier: Modifier = Modifier.onKeyEvent {
+        if(it.key == Key.Escape) {
+            viewModel.pauseTimer()
+        }
+        true
+    }){
     val context = LocalContext.current
     val viewState = viewModel.viewState.observeAsState()
     val progress = viewModel.progress.observeAsState()
@@ -34,7 +44,8 @@ fun TimerScreen(viewModel: TimerViewModel = viewModel() ){
 
         Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .height(60.dp)
                     .background(MaterialTheme.colorScheme.primary),
 
@@ -46,9 +57,10 @@ fun TimerScreen(viewModel: TimerViewModel = viewModel() ){
                 fontWeight = FontWeight.Normal,
                 fontSize = 30.sp
             )
-            Text(modifier = Modifier.fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.primary)
-                    .height(40.dp),
+            Text(modifier = Modifier
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.primary)
+                .height(40.dp),
                 text = viewState.value?.current?.name ?: "",
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.onPrimary,
@@ -108,7 +120,9 @@ fun TimerScreen(viewModel: TimerViewModel = viewModel() ){
                 {viewModel.pauseTimer()}
             }
             Spacer(modifier=Modifier.weight(1f))
-            Row(modifier = Modifier.fillMaxWidth().padding(10.dp), horizontalArrangement = Arrangement.SpaceAround) {
+            Row(modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp), horizontalArrangement = Arrangement.SpaceAround) {
 
                 FilledIconButton(
                     onClick = { viewModel.requeue(context) },
